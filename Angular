@@ -1,0 +1,142 @@
+Angular 2,4,5,7
+---------------
+Scripting Language paradigm shift
+ECMA Script 1,2,...6,7 are Java Script Standard
+Type Script superset of javascript 	standard from microsoft supports ECMA Script 6
+Type Script supports OOPS
+Strong typing
+Most basic building block of Angular2to7 is components that contains 3 primary elements HtmlTemplate, Class, Decarator
+---------------------------------------------------
+Things to know
+--------------
+HTML Attributes & DOM properties are different
+Attributes initialize DOM properties
+Properties values can change but HTML attributes values cannot (if attribute binding is required then use [attr.colspan]='colspan')
+Anguar binding works with DOM properties which reflects the changes done. 
+The HTML attribute value specifies the initial value; the DOM value property is the current value.
+
+providers: (providers: [AnyService])
+----------
+Provider are usually a singleton (One instance) object
+---------------------------------------------------
+
+component : Template (UI), Decorator (metadata to class), class(code to UI(properties and methods))
+export is used to export the class by other classes
+selector -> directive identifier to use the given template
+----------------------------------------------------
+app.component.ts (Root Component)
+----------------
+import {Component} from '@angular/core';
+@Component({
+	selector:gcg-bac,
+	//template : `<h1>hello world!<\h1>`,
+	templateUrl:'./app.component.html',
+	styleUrls:'./style.css'
+	
+})
+export class AppComponent {
+	message:string = 'Hello Angular2';
+	
+	constructor () {}
+	
+	getMessage():string {
+	return 'Hello!';
+	}
+}
+------------------------------------------------------
+Nested Components
+-----------------
+src/app/emp/emp.component.html
+src/app/emp/emp.component.ts
+src/app/app.component.html
+src/app/app.component.ts
+src/app.module.ts
+
+app.module.ts (To maintain relationships b/w components to services)
+--------------
+import {NgModule} from '@agular/core'
+import {EmpComponent} from './app/emp/emp.component';
+import {AppComponent} from './app/app.component';
+
+@NgModule({
+imports:[BrowserModule],
+declaration:[AppComponent,EmpComponent],
+bootstrap:[AppComponent], //Root Component
+providers:[]
+})
+export class AppModule{}
+--------------------------------------------------------
+Interpolation {{databinding}}
+-----------------------------
+setting a non-string value to property must use property interpolation
+isdisabled: boolean = false;
+<button [disabled]='isdisabled'/>
+--------------------------------------------------------
+Event Binding
+-------------
+<button (click)='myMethod()'>Save</button>
+<button on-click='myMethod()'>Save</button>
+export class AppComponent{
+myMethod:void{
+	console.log('Saved');
+}
+}
+-------------------------------------------------------
+2 way data binding & directives
+--------------------
+[(ngModel)]='data' //property & event binding import {Formsmodule} from '@angular/forms' 
+
+*nfIf='class property'
+
+<tr *ngFor= "let obj of objList";trackby:changeMethod;let i=index;let isFirst=first;let isLast=last;let isEven=even;let isOdd=odd>
+<td> {{obj.var1}} </td>
+<td>{{i}}</td>
+<td>{{isFirst}}</td>
+<td>{{isLast}}</td>
+<td>{{isEven}}</td>
+<td>{{isOdd}}</td>
+</tr>
+-------------------------------------------------------
+Pipes (Transfer data before display)
+------
+<tr *ngFor= "let obj of objList";trackby:changeMethod;let i=index;let isFirst=first;let isLast=last;let isEven=even;let isOdd=odd>
+<td> {{obj.var1 | uppercase}} </td>
+<td>{{i}}</td>
+<td>{{isFirst}}</td>
+<td>{{isLast}}</td>
+<td>{{isEven}}</td>
+<td>{{isOdd}}</td>
+</tr>
+-------------------------------------------------------
+Routing
+-------
+import {RouterModule, Routes} from '@angular/router';
+
+src/app/app.module.ts
+---------------------
+const appRoutes: Routes = [
+{path:'forms', component:AppComponent},
+{path:'forms/:Id', component:AppComponent},
+{path:'**', component:PageNotFoundComponent}
+];
+
+@NgModule ({
+import : [RouterModule.forRoot(appRoutes)]
+})
+export class AppModule {}
+
+src/app/app.component.html (Routed/Response data gets rendered within the router-outlet component)
+--------------------------
+<router-outlet></router-outlet>
+<!-- Routed components go here -->
+------------------------------------------------------------
+routerLink
+----------
+<h1>Angular Router</h1>
+<nav>
+  <a routerLink="/crisis-center" routerLinkActive="active">Crisis Center</a>
+  <a routerLink="/heroes" routerLinkActive="active">Heroes</a>
+</nav>
+<router-outlet></router-outlet>
+
+------------------------------------------------------------
