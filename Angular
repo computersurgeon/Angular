@@ -4,8 +4,261 @@ Scripting Language paradigm shift
 ECMA Script 1,2,...6,7 are Java Script Standard
 Type Script superset of javascript 	standard from microsoft supports ECMA Script 6
 Type Script supports OOPS
-Strong typing
-Most basic building block of Angular2to7 is components that contains 3 primary elements HtmlTemplate, Class, Decarator
+All java script can be a typescript.
+Strong typing // alternate for 'use strict'; in angular js
+
+element : <element></element> (host element)
+attribute : <element attribute=value></element>
+attributes : developer provided information on element.
+DOM properties : infomation of DOM after browser renders it.
+Most basic building block of Angular2to7 are as follows. can be generated using the ng generate (ng g in short)
+Directives
+	1.) @Component({}) Components—directives with a template.
+	2.) *Structural directives—change the DOM layout by adding and removing DOM elements.
+		 Directive, Input, TemplateRef, ViewContainerRef
+	3.) [Attribute] directives—change the appearance or behavior of an element, component, or another 
+		Directive, Input, ElementRef
+Pipe (Value transformations)
+The async pipe in angular will subscribe to an Observable or Promise and return the latest value it has emitted
+Async pipe unsubscribes automatically from Onservable  & promise to avoid potential memory leaks.
+Service (@Injectable)
+Class
+Guard (action to take before, after routing)
+Interface
+Enum
+Module (@NgModule)
+library (some api for re-use by import that cannot run on its own)
+let (mutable type, block-scoped )
+var (mutable type)
+const (immutable, block-scoped, cannot be re-used)
+const foo = Object.freeze({}); then foo obeject cannot be changed.
+
+Things to know 
+--------------
+Data sharing between components 
+@Input(), 
+@Output(), 
+@ViewChild(templateRef) ElementRef, this is used to access the DOM element in component. 
+Subject on next(v) emits to subscribe, 
+BehaviourSubject<T>(value) to hold 1 value at initialization time can be emitted to subscriber before doing next(), 
+ReplaySubject to hold more than 1 value,
+AsyncSubject latest value when stream closes;
+Array.map(),  
+() => { do something;} // 
+ _ => { do something;} // no argument function
+Push(Observable & promise) vs pull(javascript functions)
+navigating between component / views 
+pipe
+There many RxJS operators such as:
+tap() //does blocked scoped transform values. transformed data is not passed on to when subscribe
+map() // returns the transformed value to the subscriber()
+,filter(),concat(),share(),retry(),catchError(),
+switchMap(), each emitted value is considered observable then all observable is flatten to single observable
+and flatMap() etc.
+
+DataTypes
+---------
+boolean
+number
+bigint
+string
+Array : number[], string[], 
+generic Array : Arrya<number> = [1,2], Array<string> = ["one","two"]
+enum color {Red, Green, Blue}; color[2]
+any : let notsure:any = 4; notsure="something";
+void : function do():void { doSomething & don't return anything}
+Type Assertions : type convertions 
+let i : any = "something";
+let x : number = (<string>i).length;
+or
+let x : number = (i as string).length;
+object non-premitive type
+Structural Directives
+---------------------
+*ngIf
+*ngFor
+
+Components are declared, Modules are imported, and Services are provided. 
+imports : used to list the external modules that can be used within the given module 
+declaration : used to list internal components within the given module so it can interact between each other.
+providers : used to list service within the module so it can be added to the rootscope hence other service or component can inject as dependency.
+
+*.d.ts are declaration typedcript files //export declare class className{}
+NgModule			Import it from				Why you use it
+BrowserModule		@angular/platform-browser	When you want to run your app in a browser
+CommonModule		@angular/common				When you want to use NgIf, NgFor
+FormsModule			@angular/forms				When you want to build template driven forms (includes NgModel)
+ReactiveFormsModule	@angular/forms				When you want to build reactive forms
+RouterModule		@angular/router				When you want to use RouterLink, .forRoot(), and .forChild()
+HttpClientModule	@angular/common/http		When you want to talk to a server
+
+Data binding Types
+--------------------
+Interpolation {{ }}
+Property binding [ ]
+Event binding ( )
+
+@Input, @Output (Passing data between components)
+---------------
+@Input parent to child
+@Output as even emitter from child to parent
+
+@Component({
+  selector: 'hello',
+  template: `<h1>Hello {{name}}!</h1>
+  <br> <button (click)="callChildGreet()">Greet</button>`,
+  styles: [`h1 { font-family: Lato; }`]
+})
+export class HelloComponent  {
+  @Input() name: string;
+  @Output() helloEE = new EventEmitter();
+  helloComponentMessage: string = "Hello from hello child component";
+  callChildGreet(){
+    this.helloEE.emit(this.helloComponentMessage);
+  }
+}
+
+@Component({
+  selector: "app-component",
+  template: '<hello [name]="name" (helloEE)="greet($event)"></hello>',
+  styleUrls: ["./app.component.css"]
+})
+export class AppComponent {
+name: string ="Angular";
+
+greet(message: string){
+  window.alert(message);
+}
+}
+
+
+Required for Angular to RUN
+---------------------------
+NodeJS : Apart from browser javascript can run in Node.
+$node --version
+Node Package Manager (npm)
+$npm install -g @angular/cli
+$ng --version
+     _                      _                 ____ _     ___
+    / \   _ __   __ _ _   _| | __ _ _ __     / ___| |   |_ _|
+   / △ \ | '_ \ / _` | | | | |/ _` | '__|   | |   | |    | |
+  / ___ \| | | | (_| | |_| | | (_| | |      | |___| |___ | |
+ /_/   \_\_| |_|\__, |\__,_|_|\__,_|_|       \____|_____|___|
+                |___/
+
+
+Angular CLI: 8.3.23
+Node: 12.14.1
+OS: win32 x64
+Angular:
+...
+
+Package                      Version
+------------------------------------------------------
+@angular-devkit/architect    0.803.23
+@angular-devkit/core         8.3.23
+@angular-devkit/schematics   8.3.23
+@schematics/angular          8.3.23
+@schematics/update           0.803.23
+rxjs                         6.4.0
+
+
+$ng new hello-world
+$ng serve
+i ?wds?: Project is running at http://localhost:4200/webpack-dev-server/
+i ?wds?: webpack output is served from /
+i ?wds?: 404s will fallback to //index.html
+
+chunk {main} main.js, main.js.map (main) 47.8 kB [initial] [rendered]
+chunk {polyfills} polyfills.js, polyfills.js.map (polyfills) 264 kB [initial] [rendered]
+chunk {runtime} runtime.js, runtime.js.map (runtime) 6.15 kB [entry] [rendered]
+chunk {styles} styles.js, styles.js.map (styles) 9.71 kB [initial] [rendered]
+chunk {vendor} vendor.js, vendor.js.map (vendor) 3.81 MB [initial] [rendered]
+Date: 2020-01-28T21:18:34.534Z - Hash: f83bdddb84a0ec523659 - Time: 15523ms
+** Angular Live Development Server is listening on localhost:4200, open your browser on http://localhost:4200/ **
+i ?wdm?: Compiled successfully.
+
+
+$npm install -g typescript
+
+Where to start in the project
+-----------------------------
+/src/main.ts  platformBrowserDynamic().bootstrapModule(AppModule);
+main.ts
+-------
+function greetings(message){
+console.log(message);
+}
+var msg = "hello-world";
+greetings(msg);
+-------
+$tsc main.ts // op: main.js
+$node main.js
+hello-world
+-------
+var to define a variable its scope is with the meathod.
+let to define a variable its scope is within the block not with the method.
+
+variable types and initiations
+------------------------------
+var name = 'M2';
+var name : string; wihtout initialization
+var name : any;
+name = 'M2';
+name = 1;
+
+let a: number;
+let b: boolean;
+let c: string;
+let d: any;
+let e: number[] = [1,2,3];
+let f: any[] = [1, 'asdf', true];
+
+enum Color {Red=0, Green=1, Blue=2};
+
+Arrow funtion
+let dolog = (msg) => console.log(msg);
+
+interface Person {
+name: string;
+age?: number;
+characters:()=> string;
+(id:number, likes:string): boolean;
+}
+
+personList: Array<Person>;
+personList = [
+{name:"Abcd", age:12, characters:()=>"good"},
+{name:"Efgh", age:16, characters:()=>"bad"}
+];
+person.ts
+---------
+export class Person { // adding export makes this class module visible out of this type script file
+						// module can be imported in other class/module by "import {Person} from './person'"
+	Consructor(private name?:string, private age?:number){}//? implies it is optional parameter
+	// By specifying access modifier to parameter no need to initilize and assign within constructor
+	// this.x = x ; no need its taken care by default.
+printPerson(){
+console.log(name + "," + age);
+}
+}
+
+let person = new Person('M2', 36);
+person.printPerson();
+
+app.component.ts
+-------
+import {Person} from './person'
+class AppComponent (){
+let person = new Person('M2',36);
+person.printPerson();
+}
+---------------------------------------------------
+Short Cuts
+----------
+Find and replace select what has to be find and replaced using F2
+ctrl+` : for terminal window
+
 ---------------------------------------------------
 Things to know
 --------------
@@ -15,14 +268,41 @@ Properties values can change but HTML attributes values cannot (if attribute bin
 Anguar binding works with DOM properties which reflects the changes done. 
 The HTML attribute value specifies the initial value; the DOM value property is the current value.
 
+Module (rootModule, featureModule)
+-------
+Grouping of component 
+contains list of components, dependent services as providers
+app.module.ts
+-------------
+import {SomeComponet} from './path/some.component';
+import {SomeService} from './path/some.service';
+
+@NgModule({
+//ref:imdbp
+imports : [BrowserModule, FormsModule],
+declartions: [AppComponent, AllRequiredComponents],
+bootstrap:[AppComponent],
+providers:[AppServices]
+})
+
+export class AppModule{}
+------------------------------
+
 providers: (providers: [AnyService])
 ----------
 Provider are usually a singleton (One instance) object
 ---------------------------------------------------
-
+Module : group of related components.Register components to module.
 component : Template (UI), Decorator (metadata to class), class(code to UI(properties and methods))
+service : singleton then  file name should be something like some.service.ts
+if service has a constructor and has some dependency then @Injectable() decorator is required
+can be generates as $ng new service some.service.ts
+
 export is used to export the class by other classes
 selector -> directive identifier to use the given template
+----------------------------------------------------
+easy way to generate component
+$ng generate component person
 ----------------------------------------------------
 app.component.ts (Root Component)
 ----------------
@@ -108,12 +388,22 @@ Pipes (Transfer data before display)
 <td>{{isOdd}}</td>
 </tr>
 -------------------------------------------------------
-Routing
--------
+Routing (Configure, outlet, link, ActivatedRoute)
+-------------------------------------------------------
+1.) route configured in module should be ordered more specific url with param should have high priority
+2.) general url without param has lower priority.
+3.) /**/ any other url can be last 
+4.) <router-outlet></router-outlet> on route/navigation page gets renderd after this outlet element not within it.
+5.) routerLink attribure replace for href attribute in <a></a> element. So entire page is not getting loaded/refreshed.
+6.) When adding dynamic value to url use property binding [routerLink]="['path',param]"
+7.) To make the current link active use attribute routerLinkActive="active current" bootstrap css.
+8.) ActivatedRoute module to access the URL and get values.
+
 import {RouterModule, Routes} from '@angular/router';
 
 src/app/app.module.ts
 ---------------------
+PATH cannot start with /
 const appRoutes: Routes = [
 {path:'forms', component:AppComponent},
 {path:'forms/:Id', component:AppComponent},
@@ -140,3 +430,60 @@ routerLink
 <router-outlet></router-outlet>
 
 ------------------------------------------------------------
+
+Rough notes
+-----------
+main.ts
+-------
+platformBrowserDynamic().bootstrapModule(AppModule).catch(err => console.log(err));
+------------------------------------------------------------
+app.module.ts
+-------------
+@NgModule({
+//ref:imdbp
+imports : [BrowserModule, FormsModule],
+declartions: [AppComponent, AllRequiredComponents],
+bootstrap:[AppComponent],
+providers:[AppServices]
+})
+export class AppModule{}
+-----------------------------------------------------------
+app.component.ts
+@Component({
+selector: "app-component",
+templateUrl: "./app.component.html",
+styleUrls: ["./app.component.css","app2.component.css"]
+})
+class AppComponent {
+
+}
+------------------------------------------------------------
+app.component.html
+<p>hello Angular</p>
+
+--------------------------------------------------------------
+Array
+Array.forEach(someFunction(item, index){}) // can alert the original array item 
+Array.map() //get each item from array and do something with its value. return a new array. original array stays intact. 
+Array.concat() // allowes duplicates
+Array.entries() // [a,b,c].enries => [k, v] [0,1] [1,b] [2,c]
+Array.every(checksomething is true) // 
+Array.filter() //takes a function as input 
+Array.reduce(someFunction(returningSingleValue, [list of values]){return returningSingleValue}) // takes list of values from left to right do something for each value and returns single value
+Array.slice(from, requiredcount);
+Array.shift() // pop item from begining. 
+Array.unshift() // Addeds item to the begining. 
+Array.splice() // Add/remove items for the given location. splice(2,0,"a","b","c") add abc after 2nd item without removing any item.
+Array.some() // checkes does any one of the item in the array passes given condition then return boolean
+prototype Array.prototype.someFunction = function(){forEach(i of item){i.toUpperCase();}} Array.somFunction();
+Array.shift() removes the first item from the array and returns that removed item.
+--------------------------------------------------------------
+navigating between component / views 
+------------------------------------
+(@angular/router).Router.naviagte(commands: any[], extras?: NavigationExtras) : promise<boolean>()
+router.navigate(['somepath'], {relativeTo: this.route}); //{relativeTo: this.route} without this route is not working
+RouterModule.forRoot([{path:'somepath', component:someComponent}])
+----------------------------------------------------------------
+pipe composer of transformation with map
+----
+observable.pipe(map(),filter(), rxjs.operators.catchError());
