@@ -507,3 +507,40 @@ RouterModule.forRoot([{path:'somepath', component:someComponent}])
 pipe composer of transformation with map
 ----
 observable.pipe(map(),filter(), rxjs.operators.catchError());
+----------------------------------------------------------------
+
+Guard
+------
+In order to perform an action or task before or after navigation this can be be used
+
+Types of guard
+---------------
+CanDeactivate : Guard when navigation away from current route
+CanActivate : Guard when navigating to a route
+CanActivateChild : Guard when navigating to a child component
+CanLoad : Guard when navigating to a feature module loaded asynchronously
+Resolve : Perform route data retrieval before route activation
+
+All guard is of type Service
+
+1.) Create a guard
+2.) Register the guard to app module with providers list
+3.) Tag the guard to appropriate route navigation
+
+@Injectable()
+export class CreateEmployeeCanDeactivateGuardService implements canDeactive<CreateEmployeeComponent> {
+	canDeactivate(component: CreateEmployeeComponent): boolean 	{
+		if(component.createEmployeeForm.dirty){
+			return confirm('Are you sure you want to discard your changes?');
+		}
+		return true;
+	}
+}
+
+createEmployeeComponent
+<form #employeeForm="ngForm">
+
+export class CreateEmployeeComponent {
+	@ViewChild('employeeForm') public createEmployeeForm : NgForm;
+}
+------------------------------------------------------------------------------------
